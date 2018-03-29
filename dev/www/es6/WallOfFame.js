@@ -1,8 +1,16 @@
+// class WallOfFame
+
+// regroupe :
+// - l'affichage
+// - les intéractions
+
+
 class WallOfFame {
 
     constructor() {
         const t = this
 
+        // elements du DOM
         t.$openWallOfFame = document.getElementById('openWallOfFame')
         t.$closeWallOfFame = document.getElementById('closeWallOfFame')
 
@@ -16,8 +24,9 @@ class WallOfFame {
     }
 
     bindEvents() {
-
         const t = this
+
+        // écoute les interactions
 
         t.$openWallOfFame.addEventListener('click', t.openWallOfFame.bind(t))
 
@@ -29,23 +38,25 @@ class WallOfFame {
     getWallOfFame() {
         const t = this
 
-        let infos = {
-            action: 'getWallOfFame'
-        }
+        // envoi l'action au serveur
+        let infos = { action: 'getWallOfFame' }
 
         let result = Server.ajaxRequest(infos)
 
+        // en fonction du résultat on affiche le wall of fame
+        // ou on retourne
         if (!result.statuts) Server.errorConnectServer()
         else if (result.noPlayers) t.wallOfFameEmpty()
         else t.appendWallOfFame(result.wallOfFameOrdered)
-
 
     }
 
     appendWallOfFame(players) {
         const t = this
 
+        // pour chaque joueur on créer un element dans le DOM
         for (let player of players ) {
+
             let li = document.createElement('li')
             let text = document.createTextNode(player.name + ' - ' + player.wins)
 
@@ -58,6 +69,7 @@ class WallOfFame {
     wallOfFameEmpty() {
         const t = this
 
+        // si vide on affiche le message
         let li = document.createElement('li')
         let text = document.createTextNode('aucun joueurs eneregistrés')
 
@@ -68,8 +80,10 @@ class WallOfFame {
     updateWallOfFame() {
         const t = this
 
+        // on efface les players
         while(t.$wallOfFameContent.firstChild) t.$wallOfFameContent.removeChild(t.$wallOfFameContent.firstChild)
 
+        // on récupère le wall of fame
         t.getWallOfFame()
     }
 
@@ -78,7 +92,6 @@ class WallOfFame {
 
         t.$wallOfFame.style.display = 'block'
         t.$body.classList.add('wallOfFame-open')
-
     }
 
     closeWallOfFame(){
@@ -86,6 +99,5 @@ class WallOfFame {
 
         t.$wallOfFame.style.display = 'none'
         t.$body.classList.remove('wallOfFame-open')
-
     }
 }

@@ -499,32 +499,42 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// class Tictactoe
+
+// regroupe :
+// - les intéractions avec le serveur
+// - les intéractions avec le plateau
+
+
 var TicTacToe = function () {
     function TicTacToe(settings) {
         _classCallCheck(this, TicTacToe);
 
         var t = this;
 
+        // configation du jeu
         t.gameSize = Number(settings.nbrSquare);
         t.playerCircleName = settings.playerCircleName;
         t.playerCrossName = settings.playerCrossName;
         t.computer = settings.computerLevel ? 1 : 0;
         t.computerLevel = settings.computerLevel;
 
+        // éléments du dom
         t.$gameC = document.getElementsByClassName('game-c')[0];
         t.$score = document.getElementById('score');
         t.$game = document.getElementById('game');
         t.$end = document.getElementById('popUp');
         t.$header = document.getElementsByTagName('header')[0];
         t.$body = document.getElementsByTagName('body')[0];
-
         t.$accueil = document.getElementById('accueil');
         t.$end = document.getElementById('end');
         t.$newGameSecond = document.getElementById('newGameSecond');
         t.$main = document.getElementsByTagName('main')[0];
 
+        // créer notre wall of fame
         t.wallOfFame = new WallOfFame();
 
+        // flag pour animation des fleurs
         t.isPlaying = false;
 
         t.bindEvents();
@@ -534,9 +544,9 @@ var TicTacToe = function () {
     _createClass(TicTacToe, [{
         key: 'bindEvents',
         value: function bindEvents() {
-
             var t = this;
 
+            // on ecoute les click sur les boutons
             t.$end.querySelectorAll('#endGame')[0].addEventListener('click', t.endGame.bind(t));
             t.$end.querySelectorAll('#newGame')[0].addEventListener('click', t.newGame.bind(t));
             t.$newGameSecond.addEventListener('click', TicTacToe.restart);
@@ -546,6 +556,7 @@ var TicTacToe = function () {
         value: function registerGameOptions() {
             var t = this;
 
+            // on envoie les infos transmises par l'utilisateur au serveur
             var infos = {
                 action: 'registerGame',
                 data: {
@@ -559,23 +570,31 @@ var TicTacToe = function () {
 
             var registerGame = Server.ajaxRequest(infos);
 
+            // si informations bien enregistrées
             if (registerGame.statuts >= 1) {
+
+                // on stock l'id de la partie
                 window.gameID = registerGame.id;
+
+                // on lance le jeur
                 t.start();
-            } else Server.errorConnectServer();
+            }
+
+            // si erreur on l'affiche
+            else Server.errorConnectServer();
         }
     }, {
         key: 'start',
         value: function start() {
             var t = this;
 
-            // append des cases
+            // les styles
             t.createGame();
 
-            // init le click sur les div
+            // regarde le click sur les fleurs
             t.watchClick();
 
-            // ajouter les scores
+            // ajoute les scores
             t.updateScore();
         }
     }, {
@@ -583,8 +602,10 @@ var TicTacToe = function () {
         value: function createGame() {
             var t = this;
 
+            // on créer notre plateau THREE
             t.board = new Board(t.gameSize);
 
+            // on ajoute les class opur afficher ou pas des éléments
             t.$game.classList.add('active');
             t.$accueil.classList.remove('active');
             t.$main.classList.add('game-on');
@@ -595,12 +616,13 @@ var TicTacToe = function () {
         value: function updateScore() {
             var t = this;
 
-            var infos = {
-                action: 'getScores'
-            };
+            // appelle le serveur
+            var infos = { action: 'getScores'
 
-            var getScores = Server.ajaxRequest(infos);
+                // stocke sa réponse
+            };var getScores = Server.ajaxRequest(infos);
 
+            // affiche les scores dans
             t.$score.querySelectorAll('#playerCircleScore')[0].innerHTML = getScores.scores[0].name + ' : ' + getScores.scores[0].wins;
             t.$score.querySelectorAll('#playerCrossScore')[0].innerHTML = getScores.scores[1].name + ' : ' + getScores.scores[1].wins;
         }
@@ -609,34 +631,53 @@ var TicTacToe = function () {
         value: function watchClick() {
             var t = this;
 
+            // récupère nos dodecahedron
             var shapesToWatch = t.board.getShapes();
 
+            // récupère la librairie pour les manipuler
             t.domEvents = t.board.getDomListerner();
 
             var _loop = function _loop(i) {
+
+                // pour chaque forme à son click
                 t.domEvents.addEventListener(shapesToWatch[i], 'click', function () {
 
+                    // si animation ouverture de la fleur en cours on ne joue pas
+                    if (t.isPlaying) return null;
+
+                    // si non :
+                    // on block le prochain click en disant qu'on animation est en cours
+                    t.isPlaying = true;
+
+                    // on récupère sa position
                     var infos = {
                         action: 'playing',
                         data: { position: i }
 
-                        // si animation en cours on ne joue pas
-                    };if (t.isPlaying) return null;
-
-                    t.isPlaying = true;
-
-                    var playing = Server.ajaxRequest(infos);
+                        // on les envoit au serveur
+                    };var playing = Server.ajaxRequest(infos);
 
                     // si deja coché on ne fait rien
                     if (!playing.statuts) return null;
 
+                    // si non :
+                    // on lance l'animation
+                    // affichage de la fleur
+                    // effacemeent de son container
                     t.board.animateSelect(i);
                     t.board.showFlower(i, playing.player);
 
+                    // une fois l'animation finie
                     setTimeout(function () {
 
-                        if (playing.message === 'win') t.winner(playing.name);else if (playing.message === 'equality') t.equals();else if (playing.ia && playing.message === 'pending') t.iaPlaying();
+                        // vérifie si la partie est gagnée ou finie
+                        if (playing.message === 'win') t.winner(playing.name);else if (playing.message === 'equality') t.equals();
 
+                        // si non mais que la partie se jour contre un ordinateur
+                        // on le fait jouer
+                        else if (playing.ia && playing.message === 'pending') t.iaPlaying();
+
+                        // fin de l'animation
                         t.isPlaying = false;
                     }, 1000);
                 });
@@ -651,30 +692,32 @@ var TicTacToe = function () {
         value: function iaPlaying() {
             var t = this;
 
-            var infos = { action: 'ia' };
+            // on envoi les infos au serveur
+            var infos = { action: 'ia'
 
-            var result = Server.ajaxRequest(infos);
+                // on stocke le resultat
+            };var result = Server.ajaxRequest(infos);
 
+            // on lance l'animation de son déplacement
             t.board.animateSelect(result.move);
             t.board.showFlower(result.move, result.player);
 
-            if (result.message === 'win') {
-
-                setTimeout(t.winner(result.name), 1000);
-            } else if (result.message === 'equality') {
-
-                setTimeout(t.equals(), 1000);
-            }
+            // on vérifie le score
+            // si gagner ou partie finie on affiche la popup une fois l'animation finie
+            if (result.message === 'win') setTimeout(t.winner(result.name), 1000);else if (result.message === 'equality') setTimeout(t.equals(), 1000);
         }
     }, {
         key: 'removeClick',
         value: function removeClick() {
             var t = this;
 
+            // on récupère les fleurs
             var shapesToWatch = t.board.getShapes();
 
+            // récupère la librairie pour les manipuler
             t.domEvents = t.board.getDomListerner();
 
+            // on enlève leur click
             for (var i = 0; i < shapesToWatch.length; i++) {
                 t.domEvents.removeEventListener(shapesToWatch[i], 'click');
             }
@@ -684,6 +727,7 @@ var TicTacToe = function () {
         value: function showPopUp() {
             var t = this;
 
+            // affichage
             t.$end.classList.add('active');
             t.$body.classList.add('end-open');
         }
@@ -692,9 +736,11 @@ var TicTacToe = function () {
         value: function winner(player) {
             var t = this;
 
+            // on met à jour les scores
             t.wallOfFame.updateWallOfFame();
             t.$end.querySelectorAll('#winnerName')[0].innerHTML = player;
 
+            // on affiche le resultat
             t.showPopUp();
         }
     }, {
@@ -702,8 +748,10 @@ var TicTacToe = function () {
         value: function equals() {
             var t = this;
 
+            // met à jour le texte de la popup
             t.$end.querySelectorAll('#winnerName')[0].innerHTML = '===';
 
+            // on affiche le resultat
             t.showPopUp();
         }
     }, {
@@ -711,12 +759,15 @@ var TicTacToe = function () {
         value: function endGame() {
             var t = this;
 
+            // on met à jour le score
             t.updateScore();
 
+            // on change les class
             t.$body.classList.remove('end-open');
             t.$end.classList.remove('active');
             t.$body.classList.remove('wallOfFame-open');
 
+            // on enlève les clicks
             t.removeClick();
         }
     }, {
@@ -724,20 +775,28 @@ var TicTacToe = function () {
         value: function newGame() {
             var t = this;
 
+            // on met à jour les scores
             t.updateScore();
 
-            var infos = { action: 'newGame' };
+            // on envoi les infos au serveur
+            var infos = { action: 'newGame'
 
-            var newGame = Server.ajaxRequest(infos);
+                // on récupère la réponse
+            };var newGame = Server.ajaxRequest(infos);
 
-            if (!newGame.statuts) return alert(newGame.message);
+            // si erreur on l'affiche
+            if (!newGame.statuts) Server.errorConnectServer();
 
+            // on affiche le jeu
             t.$body.classList.remove('end-open');
 
+            // on reset le plateau
             t.destroyGame();
 
+            // on enleve la popup
             t.$end.classList.remove('active');
 
+            // on lance le jeu
             t.start();
         }
     }, {
@@ -745,6 +804,7 @@ var TicTacToe = function () {
         value: function destroyGame() {
             var t = this;
 
+            // on enlève le plateau
             while (t.$gameC.firstChild) {
                 t.$gameC.removeChild(t.$gameC.firstChild);
             }
@@ -753,6 +813,7 @@ var TicTacToe = function () {
         key: 'restart',
         value: function restart() {
 
+            // retour à la page d'accueil
             location.reload();
         }
     }]);
@@ -765,12 +826,20 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// class WallOfFame
+
+// regroupe :
+// - l'affichage
+// - les intéractions
+
+
 var WallOfFame = function () {
     function WallOfFame() {
         _classCallCheck(this, WallOfFame);
 
         var t = this;
 
+        // elements du DOM
         t.$openWallOfFame = document.getElementById('openWallOfFame');
         t.$closeWallOfFame = document.getElementById('closeWallOfFame');
 
@@ -786,8 +855,9 @@ var WallOfFame = function () {
     _createClass(WallOfFame, [{
         key: 'bindEvents',
         value: function bindEvents() {
-
             var t = this;
+
+            // écoute les interactions
 
             t.$openWallOfFame.addEventListener('click', t.openWallOfFame.bind(t));
 
@@ -798,12 +868,13 @@ var WallOfFame = function () {
         value: function getWallOfFame() {
             var t = this;
 
-            var infos = {
-                action: 'getWallOfFame'
-            };
+            // envoi l'action au serveur
+            var infos = { action: 'getWallOfFame' };
 
             var result = Server.ajaxRequest(infos);
 
+            // en fonction du résultat on affiche le wall of fame
+            // ou on retourne
             if (!result.statuts) Server.errorConnectServer();else if (result.noPlayers) t.wallOfFameEmpty();else t.appendWallOfFame(result.wallOfFameOrdered);
         }
     }, {
@@ -811,6 +882,7 @@ var WallOfFame = function () {
         value: function appendWallOfFame(players) {
             var t = this;
 
+            // pour chaque joueur on créer un element dans le DOM
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;
             var _iteratorError = undefined;
@@ -818,6 +890,7 @@ var WallOfFame = function () {
             try {
                 for (var _iterator = players[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     var player = _step.value;
+
 
                     var li = document.createElement('li');
                     var text = document.createTextNode(player.name + ' - ' + player.wins);
@@ -846,6 +919,7 @@ var WallOfFame = function () {
         value: function wallOfFameEmpty() {
             var t = this;
 
+            // si vide on affiche le message
             var li = document.createElement('li');
             var text = document.createTextNode('aucun joueurs eneregistrés');
 
@@ -857,9 +931,11 @@ var WallOfFame = function () {
         value: function updateWallOfFame() {
             var t = this;
 
+            // on efface les players
             while (t.$wallOfFameContent.firstChild) {
                 t.$wallOfFameContent.removeChild(t.$wallOfFameContent.firstChild);
-            }t.getWallOfFame();
+            } // on récupère le wall of fame
+            t.getWallOfFame();
         }
     }, {
         key: 'openWallOfFame',
@@ -887,12 +963,18 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// class Website
+
+// - pour les formulaires de création de la partie
+
+
 var Website = function () {
     function Website() {
         _classCallCheck(this, Website);
 
         var t = this;
 
+        // elements du DOM
         t.$buttonsPlayers = document.getElementsByClassName('button-player');
         t.$forms = document.getElementsByClassName('form');
         t.$options = document.getElementsByClassName('option');
@@ -1055,6 +1137,8 @@ var Website = function () {
         value: function showForm(formId) {
             var t = this;
 
+            // on affiche le formulaire en fonction du mode de jeu
+
             var _iteratorNormalCompletion5 = true;
             var _didIteratorError5 = false;
             var _iteratorError5 = undefined;
@@ -1093,8 +1177,10 @@ var Website = function () {
         key: 'verifyInputs',
         value: function verifyInputs(content, $element, keycode) {
 
+            // on block le nombre de caractères à 3
             if (content.length === 3 && keycode !== "Backspace") return false;
 
+            // si vide on enlève la coloration du bouton
             if (content.length === 1) $element.classList.remove('selected');else $element.classList.add('selected');
 
             return true;
@@ -1103,6 +1189,7 @@ var Website = function () {
         key: 'getGameSettings',
         value: function getGameSettings(formId) {
 
+            // on récupère les éléments en fonction du boutton clické
             var $form = document.getElementById(formId);
 
             var playerCircleName = $form.querySelector('.player-circle').value;
@@ -1118,12 +1205,9 @@ var Website = function () {
             if (formId === 'formOnePlayer') {
                 gameSettings.computer = true;
                 gameSettings.computerLevel = $form.querySelector('.option.computer.selected').getAttribute('data-level');
-            } else {
-                gameSettings.playerCrossName = $form.querySelector('.player-cross').value;
-            }
+            } else gameSettings.playerCrossName = $form.querySelector('.player-cross').value;
 
-            console.log('gameSettings', gameSettings);
-
+            // on renvoi les informations
             return gameSettings;
         }
     }]);

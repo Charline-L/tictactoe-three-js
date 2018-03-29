@@ -1,8 +1,14 @@
+// class Website
+
+// - pour les formulaires de création de la partie
+
+
 class Website {
 
     constructor() {
         const t = this
 
+        // elements du DOM
         t.$buttonsPlayers = document.getElementsByClassName('button-player')
         t.$forms = document.getElementsByClassName('form')
         t.$options = document.getElementsByClassName('option')
@@ -14,7 +20,6 @@ class Website {
 
     bindEvent() {
         const t = this
-
 
         // choix des joueurs
         for (let button of t.$buttonsPlayers) {
@@ -34,7 +39,6 @@ class Website {
             })
 
         }
-
 
         // les boutons de selection
         for (let option of t.$options ) {
@@ -67,7 +71,6 @@ class Website {
 
         }
 
-
         // la validation du formulaire
         for (let button of t.$buttonsStart ) {
 
@@ -95,8 +98,10 @@ class Website {
 
     static verifyInputs(content, $element, keycode) {
 
+        // on block le nombre de caractères à 3
         if ( content.length === 3 && keycode !== "Backspace") return false
 
+        // si vide on enlève la coloration du bouton
         if (content.length === 1 ) $element.classList.remove('selected')
         else $element.classList.add('selected')
 
@@ -105,6 +110,7 @@ class Website {
 
     static getGameSettings(formId) {
 
+        // on récupère les éléments en fonction du boutton clické
         let $form = document.getElementById(formId)
 
         let playerCircleName = $form.querySelector('.player-circle').value
@@ -122,18 +128,17 @@ class Website {
             gameSettings.computerLevel = $form.querySelector('.option.computer.selected').getAttribute('data-level')
         }
 
-        else {
-            gameSettings.playerCrossName = $form.querySelector('.player-cross').value
-        }
+        else gameSettings.playerCrossName = $form.querySelector('.player-cross').value
 
-        console.log('gameSettings', gameSettings)
-
+        // on renvoi les informations
         return gameSettings
     }
 
 
     showForm(formId) {
         const t = this
+
+        // on affiche le formulaire en fonction du mode de jeu
 
         for (let form of t.$forms) form.classList.remove('active')
 
