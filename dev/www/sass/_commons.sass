@@ -1,0 +1,75 @@
+section
+  display: none
+  width: 100%
+  height: 100%
+  background-color: white
+
+.form
+  display: none
+
+.active
+  display: block
+
+main
+  width: 100vw
+  height: 100vh
+  padding: 10vh
+  &.game-on
+    padding: 0
+
+.left
+  float: left
+
+.right
+  float: right
+
+.clear
+  clear: both
+
+.wrapper
+  width: 100%
+
+.vam
+  vertical-align: middle
+  line-height: 1
+  display: inline-block
+
+.center
+  text-align: center
+
+.inl
+  display: inline-block
+  vertical-align: middle
+
+.bg-gradient
+  background: linear-gradient(135deg, $purple 0%, $pink 100%)
+  background-size: 400% 400%
+  animation: bg-gradient-animate 5s ease infinite
+
+.filled
+  @extend .bg-gradient
+  color: white
+  border: solid 1px white
+
+.element
+  margin: 50px auto
+  &:first-of-type
+    margin-top: 0
+
+.fullPop
+  position: absolute
+  top: 10vh
+  left: 10vh
+  width: calc(100vw - 20vh)
+  height: 80vh
+  line-height: 80vh
+  text-align: center
+
+
+.wallOfFame-open
+  header, #score, #openWallOfFame, #end, #newGameSecond
+    display: none
+
+.end-open
+  header, #openWallOfFame, #score, #newGameSecond
+    display: none

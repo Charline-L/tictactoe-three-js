@@ -1,0 +1,32 @@
+.option-line-select
+  position: relative
+  width: 100%
+
+  .content
+    height: 40px !important
+
+  .options-c
+    position: absolute
+    top: 50%
+    z-index: 2
+    transform: translateY(-50%)
+    display: flex
+    justify-content: space-between
+    width: 100%
+
+    .option
+      background-color: white
+      border-radius: 100%
+      width: 40px
+      height: 40px
+      &:hover
+        background-color: $pink
+        color: white
+        border-color: white
+
+  .line
+    height: 1px
+    position: absolute
+    z-index: 0
+    top: 50%
+    width: 100%

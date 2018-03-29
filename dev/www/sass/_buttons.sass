@@ -1,0 +1,65 @@
+.button
+  @extend .light
+
+  border: solid 1px $grey
+  transition: all 0.25s ease-out
+  border-radius: 20px
+  z-index: 2
+  font-size: 14px
+  color: $grey
+  cursor: pointer
+
+  &:hover
+    background-color: $pink
+    color: white
+    border-color: white
+    path
+      fill: white
+
+  &-text
+    text-align: center
+    width: 100%
+    padding: 10px 30px
+
+    &::placeholder
+      text-transform: initial
+
+    &:focus
+      border-color: white
+      color: white
+      background-color: $pink
+
+  &-start
+    @extend .upper
+    padding: 10px 30px
+    margin-bottom: 0 !important
+    width: 200px
+
+  &-demi
+    width: 40%
+    padding: 10px 0
+
+  &-svg
+    path
+      fill: $grey
+      transition: fill 0.2s linear
+
+  &-close
+    width: 40px
+    height: 40px
+    border-radius: 100%
+    border: solid 1px $purple
+    line-height: 40px
+    transition: all 0.5s ease-out
+    path
+      fill: $purple
+    &:hover
+      @extend .selected
+      transform: rotate(180deg)
+
+
+  &.selected
+    @extend .filled
+    color: white
+    path
+      fill: white
