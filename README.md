@@ -1,10 +1,8 @@
 # tictactoe-three-js
 
 
-> projet réalisé dans le cadre du cours de jaavscript avancé 
+> projet réalisé dans le cadre du cours de javascript avancé 
 
-
-#### 1. éxécution 
 
 ```
 $ npm install 
