@@ -133,8 +133,6 @@ app.post('/ia', function (req, res) {
     let resultJson = jsonManager.sendMove(move)
     let resultCheckMove = game.checkMove(move)
 
-    console.log('resultJson', resultJson)
-
     // si erreur enregistrement du json on retourne l'erreur
     if ( !resultJson.statuts ) result = resultJson
 
@@ -153,8 +151,6 @@ app.post('/ia', function (req, res) {
             else result.name = 'ia'
 
         }
-
-        console.log('move.position', move.position)
 
         result.move = move.position
     }

@@ -333,7 +333,8 @@ header {
     right: 0; }
     #game .game-c canvas {
       width: 100% !important;
-      height: 100% !important; }
+      height: 100% !important;
+      cursor: url("../img/cursor.png"), pointer; }
   #game #openWallOfFame {
     position: absolute;
     top: -webkit-calc(50px - 38px / 2);

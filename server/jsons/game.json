@@ -1,1 +1,3 @@
-{"games":[{"id":0,"playerCircle":{"valuePlayer":1,"isPlaying":true,"name":"cha","wins":1},"playerCross":{"valuePlayer":-1,"isPlaying":false,"name":"doe","wins":0},"game":[1,1,-1,-1,1,-1,0,0,1],"gameSize":3,"gameStatus":"playing","computer":{"on":1,"level":"dumb"}}]}
+{
+  "games": []
+}
