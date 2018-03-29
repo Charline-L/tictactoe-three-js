@@ -9,7 +9,7 @@ $ npm install
 $ npm start
 ```
 
-Pour ce projet j'ai developé :
+Pour ce projet j'ai developpé :
 
 - vérification côté serveur de l'avancemment du jeu 
 - possibilité de jouer contre l'ordinateur avec le choix de son niveau 
