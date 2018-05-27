@@ -26,14 +26,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 
 // class
-var port = 3000; // TODO :
-// - décomposer les fichiers
-// - gestion des erreurs
-// - réussir à faire un GROSSE CLASSEpour avoir dedans toutes linfos que je balade de class en clas
-//// exemple game size !!
-
-
-// packets
+var port = 3000; // packets
 
 var app = (0, _express2.default)();
 var jsonManager = new _JsonManager2.default();
@@ -41,10 +34,16 @@ var game = new _Game2.default();
 
 app.use((0, _cors2.default)());
 app.use(_bodyParser2.default.json());
+app.use(_express2.default.static('./'));
 
 // lance le serveur
 app.listen(port, function () {
     console.log('||-> server listening on port ' + port);
+});
+
+// affiche le jeux
+app.get('/', function (req, res) {
+    res.sendFile('index.html', { root: 'www' });
 });
 
 // enregistre les paramètres du jeu

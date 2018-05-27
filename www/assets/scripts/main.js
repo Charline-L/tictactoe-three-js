@@ -53,7 +53,6 @@ var Board = function () {
         // variables stockage
         t.spheresElements = [];
         t.dodecahedronElements = [];
-        // t.flowersElements = []
         t.flowersObj = [];
         t.linesElements = [];
         t.starFieldElements = [];
@@ -77,27 +76,17 @@ var Board = function () {
             t.setCamera();
             t.controls = new THREE.OrbitControls(t.camera);
             t.animate();
-            // t.bindEvents()
         }
-
-        // bindEvents() {
-        //     const t = this
-        //
-        //     window.addEventListener('resize', function(){
-        //         console.log('in resize !!!')
-        //         t.setSizeRenderer.bind(t)
-        //     } )
-        //
-        // }
-
     }, {
         key: 'setSizeRenderer',
         value: function setSizeRenderer() {
             var t = this;
 
+            // on calcule la taille
             t.ww = window.innerWidth - 400;
             t.wh = window.innerHeight;
 
+            // on set la taille du renderer an fonction de la taille de l'écran
             t.renderer.setSize(t.ww, t.wh);
         }
     }, {
@@ -105,9 +94,11 @@ var Board = function () {
         value: function setLights() {
             var t = this;
 
+            // on ajoute une lumière ambiante
             var lightAmbient = new THREE.AmbientLight(t.white, 1);
             t.scene.add(lightAmbient);
 
+            // on ajoute une lumière
             var lightPoint = new THREE.PointLight(t.purple, 1);
             t.scene.add(lightPoint);
         }
@@ -116,10 +107,12 @@ var Board = function () {
         value: function setCamera() {
             var t = this;
 
+            // on set la position de la camera
             t.camera.position.z = t.gameSize * 20;
             t.camera.position.x = t.gap / 4 + 5;
             t.camera.position.y = t.gap / -4 - 2.5;
 
+            // on la centre sur le jeu
             t.camera.lookAt(0, 0, 0);
         }
     }, {
@@ -229,7 +222,7 @@ var Board = function () {
 
                 // on va créer un "champ d'étoiles"
                 var starsGeometry = new THREE.Geometry();
-                var sprite = new THREE.TextureLoader().load("assets/img/disc.png");
+                var sprite = new THREE.TextureLoader().load("www/assets/img/disc.png");
 
                 // on créer 10 particule par case
                 for (var _i3 = 0; _i3 < 10; _i3++) {
@@ -346,7 +339,7 @@ var Board = function () {
             // on configure le marnager dans le JSONLoader
             var loaderMeshOne = new THREE.JSONLoader(manager);
 
-            loaderMeshOne.load('assets/objets/flowerC.json', function (geometry) {
+            loaderMeshOne.load('www/assets/objets/flowerC.json', function (geometry) {
                 // une fois terminé on stocke la geometry de la fleur dans un tableau
                 // pour la réutiliser lors de son apparition
                 t.flowersObj.push(geometry);
@@ -356,7 +349,7 @@ var Board = function () {
             // on configure le marnager dans le JSONLoader
             var loaderMeshTwo = new THREE.JSONLoader(manager);
 
-            loaderMeshTwo.load('assets/objets/flowerI.json', function (geometry) {
+            loaderMeshTwo.load('www/assets/objets/flowerI.json', function (geometry) {
                 // une fois terminé on stocke la geometry de la fleur dans un tableau
                 // pour la réutiliser lors de son apparition
                 t.flowersObj.push(geometry);

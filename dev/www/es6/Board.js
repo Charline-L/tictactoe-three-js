@@ -225,7 +225,7 @@ class Board {
 
             // on va créer un "champ d'étoiles"
             let starsGeometry = new THREE.Geometry()
-            let sprite = new THREE.TextureLoader().load( "assets/img/disc.png" )
+            let sprite = new THREE.TextureLoader().load( "www/assets/img/disc.png" )
 
             // on créer 10 particule par case
             for ( let i = 0; i < 10; i ++ ) {
@@ -352,7 +352,7 @@ class Board {
         let loaderMeshOne = new THREE.JSONLoader(manager)
 
         loaderMeshOne.load(
-            'assets/objets/flowerC.json',
+            'www/assets/objets/flowerC.json',
 
             function ( geometry ) {
                 // une fois terminé on stocke la geometry de la fleur dans un tableau
@@ -367,7 +367,7 @@ class Board {
         let loaderMeshTwo = new THREE.JSONLoader(manager)
 
         loaderMeshTwo.load(
-            'assets/objets/flowerI.json',
+            'www/assets/objets/flowerI.json',
 
             function ( geometry ) {
                 // une fois terminé on stocke la geometry de la fleur dans un tableau

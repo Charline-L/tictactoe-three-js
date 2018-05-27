@@ -1,10 +1,3 @@
-// TODO :
-// - décomposer les fichiers
-// - gestion des erreurs
-// - réussir à faire un GROSSE CLASSEpour avoir dedans toutes linfos que je balade de class en clas
-//// exemple game size !!
-
-
 // packets
 import express from 'express'
 import bodyParser from 'body-parser'
@@ -15,7 +8,6 @@ import JsonManager from './JsonManager.js'
 import Game from './Game.js'
 
 
-
 // constantes
 const port = 3000
 const app = express()
@@ -24,11 +16,9 @@ const game = new Game()
 
 
 
-
 app.use(cors())
 app.use(bodyParser.json())
-
-
+app.use(express.static('./'))
 
 // lance le serveur
 app.listen(port, function () {
@@ -36,6 +26,10 @@ app.listen(port, function () {
 })
 
 
+// affiche le jeux
+app.get('/', function (req, res) {
+    res.sendFile('index.html', { root: 'www'})
+})
 
 // enregistre les paramètres du jeu
 app.post('/registerGame', function (req, res) {
