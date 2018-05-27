@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="de85ea45-af3b-4cac-813c-abc7942fcaeb" name="Default" comment="" />
+    <list default="true" id="de85ea45-af3b-4cac-813c-abc7942fcaeb" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,11 +59,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="544">
               <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package-lock.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package-lock.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="1250" column="19" lean-forward="true" selection-start-line="1250" selection-start-column="19" selection-end-line="1250" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -78,6 +90,7 @@
       <find>asse</find>
       <find>KK</find>
       <find>assets</find>
+      <find>hoek</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/dev/server</dir>
@@ -100,6 +113,7 @@
         <option value="$PROJECT_DIR$/dev/server/index.js" />
         <option value="$PROJECT_DIR$/dev/www/es6/Board.js" />
         <option value="$PROJECT_DIR$/www/index.html" />
+        <option value="$PROJECT_DIR$/package-lock.json" />
       </list>
     </option>
   </component>
@@ -226,12 +240,12 @@
       <updated>1522352805313</updated>
       <workItem from="1522352806616" duration="5143000" />
       <workItem from="1526138095230" duration="1037000" />
-      <workItem from="1527413523254" duration="2049000" />
+      <workItem from="1527413523254" duration="2148000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8229000" />
+    <option name="totallyTimeSpent" value="8328000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -618,6 +632,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
           <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="1250" column="19" lean-forward="true" selection-start-line="1250" selection-start-column="19" selection-end-line="1250" selection-end-column="19" />
           <folding />
         </state>
       </provider>
